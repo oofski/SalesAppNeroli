@@ -15,6 +15,9 @@ concurrency:
   group: win-build-${{ github.ref }}
   cancel-in-progress: true
 
+permissions:
+  contents: write # required to publish the installer to GitHub Releases on a tag
+
 jobs:
   build-windows:
     runs-on: windows-latest
@@ -35,10 +38,8 @@ jobs:
         run: npm run build
 
       - name: Build installer
-        # Publish to GitHub Releases only on a version tag; otherwise just package.
-        run: npx --no-install electron-builder --win --x64 --publish ${{ startsWith(github.ref, 'refs/tags/') && 'always' || 'never' }}
+        run: npx --no-install electron-builder --win --x64 --publish never
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           # EV code-signing secrets (optional) — provide to sign the installer (§13.2).
           CSC_LINK: ${{ secrets.CSC_LINK }}
           CSC_KEY_PASSWORD: ${{ secrets.CSC_KEY_PASSWORD }}
@@ -53,3 +54,17 @@ jobs:
             release/latest.yml
           if-no-files-found: error
           retention-days: 30
+
+      # On a version tag, publish a public GitHub Release with the installer attached —
+      # giving a permanent, no-login, clickable download link (and the electron-updater feed).
+      - name: Publish GitHub Release
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v2
+        with:
+          name: Neroli Sales App ${{ github.ref_name }}
+          files: |
+            release/*.exe
+            release/*.exe.blockmap
+            release/latest.yml
+          fail_on_unmatched_files: true
+          generate_release_notes: true

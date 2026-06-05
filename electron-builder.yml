@@ -21,7 +21,7 @@ win:
     - target: nsis
       arch:
         - x64
-  artifactName: ${productName}-Setup-${version}.${ext}
+  artifactName: NeroliSalesApp-Setup-${version}.${ext}
   # Code signing (EV certificate) — supplied via CI secrets, never committed (§13.2).
   # signingHashAlgorithms: ['sha256']
 
@@ -37,4 +37,4 @@ nsis:
 publish:
   provider: github
   owner: oofski
-  repo: salesappneroli
+  repo: SalesAppNeroli
