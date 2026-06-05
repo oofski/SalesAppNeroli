@@ -1,0 +1,88 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    color-scheme: light;
+  }
+
+  html,
+  body,
+  #root {
+    height: 100%;
+  }
+
+  body {
+    @apply bg-brand-light text-text-primary font-sans antialiased;
+    font-size: 14px;
+    margin: 0;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Refined, calm scrollbars in keeping with the Aveda aesthetic. */
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-thumb {
+    @apply bg-brand-stone rounded-full;
+    border: 2px solid transparent;
+    background-clip: content-box;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-brand-warm;
+    background-clip: content-box;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+}
+
+@layer components {
+  .kpi-label {
+    @apply text-label uppercase text-text-secondary;
+  }
+
+  .skeleton {
+    @apply bg-brand-stone/40 rounded-md;
+    animation: neroli-pulse 1.4s ease-in-out infinite;
+  }
+
+  /* Thin underline tabs used across Sales / Reviews. */
+  .tab-underline {
+    @apply relative pb-2 text-body font-medium text-text-secondary transition-colors;
+  }
+  .tab-underline[data-active='true'] {
+    @apply text-brand-dark;
+  }
+  .tab-underline[data-active='true']::after {
+    content: '';
+    @apply absolute left-0 -bottom-px h-0.5 w-full bg-brand-warm rounded-full;
+  }
+}
+
+@keyframes neroli-pulse {
+  0%,
+  100% {
+    opacity: 0.55;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes neroli-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in {
+  animation: neroli-fade-in 0.32s ease-out;
+}
