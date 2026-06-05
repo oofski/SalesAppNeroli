@@ -1,0 +1,40 @@
+# electron-builder configuration — produces the signed Windows .exe installer (Build Plan §13).
+appId: com.neroli.salesapp
+productName: Neroli Sales App
+copyright: Copyright © 2026 Neroli Salon & Spa — Internal & Confidential
+
+directories:
+  buildResources: build
+  output: release
+
+files:
+  - out/**/*
+  - package.json
+
+# Native modules (better-sqlite3) are unpacked so they load correctly at runtime.
+asarUnpack:
+  - '**/*.node'
+  - 'node_modules/better-sqlite3/**'
+
+win:
+  target:
+    - target: nsis
+      arch:
+        - x64
+  artifactName: ${productName}-Setup-${version}.${ext}
+  # Code signing (EV certificate) — supplied via CI secrets, never committed (§13.2).
+  # signingHashAlgorithms: ['sha256']
+
+nsis:
+  oneClick: false
+  perMachine: false # install per-user to %APPDATA%, no admin rights required (§13.1)
+  allowToChangeInstallationDirectory: true
+  createDesktopShortcut: true
+  createStartMenuShortcut: true
+  shortcutName: Neroli Sales App
+
+# Auto-update feed — electron-updater publishes to GitHub Releases (§9.1).
+publish:
+  provider: github
+  owner: oofski
+  repo: salesappneroli

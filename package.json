@@ -1,0 +1,53 @@
+{
+  "name": "neroli-sales-app",
+  "version": "1.0.0",
+  "description": "Neroli Sales App — internal Windows desktop tool for Neroli Salon & Spa leadership. Turns Zenoti exports into role-aware sales, coaching, and review insights.",
+  "author": "Neroli Salon & Spa",
+  "license": "UNLICENSED",
+  "private": true,
+  "main": "./out/main/index.js",
+  "scripts": {
+    "dev": "electron-vite dev",
+    "start": "electron-vite preview",
+    "build": "electron-vite build",
+    "typecheck:node": "tsc --noEmit -p tsconfig.node.json --composite false",
+    "typecheck:web": "tsc --noEmit -p tsconfig.web.json --composite false",
+    "typecheck": "npm run typecheck:node && npm run typecheck:web",
+    "lint": "eslint . --ext .ts,.tsx",
+    "samples": "node scripts/gen-samples.mjs",
+    "rebuild": "electron-rebuild -f -w better-sqlite3",
+    "package:win": "npm run build && electron-builder --win --x64",
+    "postinstall": "electron-builder install-app-deps"
+  },
+  "dependencies": {
+    "better-sqlite3": "^11.8.1",
+    "bcryptjs": "^2.4.3",
+    "clsx": "^2.1.1",
+    "electron-updater": "^6.3.9",
+    "exceljs": "^4.4.0",
+    "lucide-react": "^0.469.0",
+    "papaparse": "^5.4.1",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "xlsx": "^0.18.5",
+    "zustand": "^5.0.2"
+  },
+  "devDependencies": {
+    "@electron-toolkit/tsconfig": "^1.0.1",
+    "@types/bcryptjs": "^2.4.6",
+    "@types/better-sqlite3": "^7.6.12",
+    "@types/node": "^22.10.5",
+    "@types/papaparse": "^5.3.15",
+    "@types/react": "^18.3.18",
+    "@types/react-dom": "^18.3.5",
+    "@vitejs/plugin-react": "^4.3.4",
+    "autoprefixer": "^10.4.20",
+    "electron": "^33.3.1",
+    "electron-builder": "^25.1.8",
+    "electron-vite": "^2.3.0",
+    "postcss": "^8.4.49",
+    "tailwindcss": "^3.4.17",
+    "typescript": "^5.7.3",
+    "vite": "^5.4.11"
+  }
+}
