@@ -28,6 +28,22 @@ function createWindow(): void {
 
   mainWindow.on('ready-to-show', () => mainWindow?.show())
 
+  // Test affordance: NEROLI_SHOT=<png path> captures the loaded UI and exits.
+  if (process.env['NEROLI_SHOT']) {
+    mainWindow.webContents.once('did-finish-load', () => {
+      setTimeout(async () => {
+        try {
+          const img = await mainWindow!.webContents.capturePage()
+          const { writeFileSync } = await import('fs')
+          writeFileSync(process.env['NEROLI_SHOT']!, img.toPNG())
+        } catch {
+          /* ignore */
+        }
+        app.quit()
+      }, 2000)
+    })
+  }
+
   // Open external links in the OS browser, never inside the app shell.
   mainWindow.webContents.setWindowOpenHandler(({ url }) => {
     shell.openExternal(url)

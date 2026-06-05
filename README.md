@@ -104,6 +104,7 @@ everywhere in the app.
 | `npm run build` | Type-check + bundle main/preload/renderer |
 | `npm run typecheck` | Type-check both the node and web TS projects |
 | `npm run samples` | Regenerate sample Zenoti exports |
+| `npm run test:parsers` | Run the four parsers + scoring against the sample files (end-to-end check) |
 | `npm run package:win` | Build and produce the signed Windows `.exe` installer |
 
 ---

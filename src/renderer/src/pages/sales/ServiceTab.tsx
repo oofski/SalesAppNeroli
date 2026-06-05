@@ -42,7 +42,7 @@ export function ServiceTab(): JSX.Element {
   const tabs = useMemo(() => {
     const base = scoped.map((s) => ({ id: s.locationId, label: locationName(s.locationId), rows: s.rows, range: s.dateRange }))
     if (base.length > 1)
-      base.unshift({ id: 'combined', label: 'Combined', rows: scoped.flatMap((s) => s.rows), range: scoped[0].range })
+      base.unshift({ id: 'combined', label: 'Combined', rows: scoped.flatMap((s) => s.rows), range: scoped[0].dateRange })
     return base
   }, [scoped])
 

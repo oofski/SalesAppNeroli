@@ -8,6 +8,7 @@ release/
 .env.local
 .vite/
 coverage/
+.tmp-test.mjs
 
 # Generated sample Zenoti exports (regenerate with `npm run samples`)
 sample-data/*.xlsx

@@ -13,8 +13,8 @@
     "typecheck:node": "tsc --noEmit -p tsconfig.node.json --composite false",
     "typecheck:web": "tsc --noEmit -p tsconfig.web.json --composite false",
     "typecheck": "npm run typecheck:node && npm run typecheck:web",
-    "lint": "eslint . --ext .ts,.tsx",
     "samples": "node scripts/gen-samples.mjs",
+    "test:parsers": "esbuild scripts/test-parsers.ts --bundle --platform=node --format=esm --outfile=.tmp-test.mjs --alias:@shared=./src/shared --external:xlsx --external:papaparse && node .tmp-test.mjs && rm -f .tmp-test.mjs",
     "rebuild": "electron-rebuild -f -w better-sqlite3",
     "package:win": "npm run build && electron-builder --win --x64",
     "postinstall": "electron-builder install-app-deps"
@@ -42,6 +42,7 @@
     "@types/react-dom": "^18.3.5",
     "@vitejs/plugin-react": "^4.3.4",
     "autoprefixer": "^10.4.20",
+    "esbuild": "^0.21.5",
     "electron": "^33.3.1",
     "electron-builder": "^25.1.8",
     "electron-vite": "^2.3.0",
