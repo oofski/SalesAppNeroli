@@ -60,19 +60,28 @@ jobs:
           if-no-files-found: error
           retention-days: 30
 
+      - name: Resolve version
+        id: ver
+        shell: bash
+        run: echo "tag=v$(node -p "require('./package.json').version")" >> "$GITHUB_OUTPUT"
+
       # Publish a public GitHub Release with the installer attached — a permanent,
-      # no-login, clickable download link (and the electron-updater feed). Triggered
-      # by a version tag, or manually via the release_version input.
+      # no-login, clickable download link (and the electron-updater feed). Fires on a
+      # version tag, a manual run with release_version, or a commit marked [release].
       - name: Publish GitHub Release
-        if: startsWith(github.ref, 'refs/tags/') || inputs.release_version != ''
+        if: startsWith(github.ref, 'refs/tags/') || (github.event_name == 'workflow_dispatch' && inputs.release_version != '') || contains(github.event.head_commit.message, '[release]')
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: ${{ inputs.release_version || github.ref_name }}
+          tag_name: ${{ (github.event_name == 'workflow_dispatch' && inputs.release_version) || (startsWith(github.ref, 'refs/tags/') && github.ref_name) || steps.ver.outputs.tag }}
           target_commitish: ${{ github.sha }}
-          name: Neroli Sales App ${{ inputs.release_version || github.ref_name }}
+          name: Neroli Sales App ${{ (github.event_name == 'workflow_dispatch' && inputs.release_version) || (startsWith(github.ref, 'refs/tags/') && github.ref_name) || steps.ver.outputs.tag }}
+          body: |
+            Neroli Sales App — Windows desktop installer.
+
+            Download **NeroliSalesApp-Setup-1.0.0.exe** below and run it. The app is currently
+            unsigned, so Windows SmartScreen may show a prompt — choose **More info → Run anyway**.
           files: |
             release/*.exe
             release/*.exe.blockmap
             release/latest.yml
           fail_on_unmatched_files: true
-          generate_release_notes: true
